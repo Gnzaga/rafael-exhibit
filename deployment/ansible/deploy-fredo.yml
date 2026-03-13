@@ -1,0 +1,53 @@
+---
+- name: Deploy Rafael Exhibit to Fredo via Docker
+  hosts: docker_hosts
+  become: yes
+  vars:
+    compose_dir: "/home/{{ ansible_user }}/{{ app_name }}"
+
+  tasks:
+    - name: Create application directory
+      file:
+        path: "{{ compose_dir }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+
+    - name: Deploy docker-compose configuration
+      template:
+        src: templates/docker-compose-fredo.yml.j2
+        dest: "{{ compose_dir }}/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
+
+    - name: Pull Docker image
+      shell: docker pull "{{ docker_image }}"
+      become_user: "{{ ansible_user }}"
+      ignore_errors: yes
+
+    - name: Stop existing container
+      shell: docker-compose down
+      args:
+        chdir: "{{ compose_dir }}"
+      become_user: "{{ ansible_user }}"
+      ignore_errors: yes
+
+    - name: Start new container
+      shell: docker-compose pull && docker-compose up -d
+      args:
+        chdir: "{{ compose_dir }}"
+      become_user: "{{ ansible_user }}"
+
+    - name: Wait for container to be healthy
+      wait_for:
+        port: "{{ deployment_port }}"
+        delay: 2
+        timeout: 30
+
+  handlers:
+    - name: restart docker
+      service:
+        name: docker
+        state: restarted

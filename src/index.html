@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rafael Gonzaga — A Life in Paint</title>
+  <meta name="description" content="A virtual gallery honoring Filipino-American painter and Temple University art educator Rafael Gonzaga (1949-2010). 33 paintings spanning portraits, Philippine landscapes, Philadelphia streets, and abstract works." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero__image-wrap">
+      <picture>
+        <source srcset="/images/medium/IMG_1253.webp" type="image/webp" />
+        <img
+          src="/images/medium/IMG_1253.jpg"
+          alt="Self-portrait by Rafael Gonzaga"
+          class="hero__image"
+        />
+      </picture>
+    </div>
+    <div class="hero__overlay">
+      <h1 class="hero__title">Rafael Gonzaga</h1>
+      <p class="hero__dates">1949 &ndash; 2010</p>
+      <p class="hero__subtitle">Painter &middot; Educator &middot; Father</p>
+    </div>
+    <div class="hero__scroll-hint" aria-hidden="true">
+      <span class="hero__scroll-arrow"></span>
+    </div>
+  </section>
+
+  <!-- BIO -->
+  <section class="bio" id="bio">
+    <div class="bio__inner">
+      <h2 class="section-heading">His Story</h2>
+      <div class="bio__text">
+        <p><strong>Rafael Gonzaga</strong> (1949 &ndash; 2010) was a Filipino-American painter and art educator whose life spanned two worlds.</p>
+        <p>Born in the Philippines on November 11, 1949, Rafael came to the United States as a young man serving in the U.S. Navy. His military service took him across the country, from New York to San Diego, before he eventually settled in the Philadelphia area, making his home in Cherry Hill, New Jersey. Along the way he met the woman who would become his wife, and together they built a family: three children, Voltaire, Eric, and Arielle.</p>
+        <p>Rafael found his calling at the intersection of art and teaching. As an art educator at Temple University, he spent years sharing his craft with students while developing his own artistic voice. His work ranged from the landscapes and village scenes of his Philippine homeland to the rooftops and row houses of Philadelphia, from classical figure studies to bold abstract compositions.</p>
+        <p>Rafael passed away on November 21, 2010, at the age of 61. He was laid to rest at the Brigadier General William C. Doyle Veterans Memorial Cemetery. This gallery was created by his grandchild as a tribute to his life and work, a digital home for paintings that have lived on the walls of family homes, each one carrying the memory of his hands, his eye, and his heart.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY SECTIONS (rendered by JS) -->
+  <main class="gallery" id="gallery"></main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Painting viewer" hidden>
+    <button class="lightbox__close" aria-label="Close">&times;</button>
+    <button class="lightbox__prev" aria-label="Previous painting">&#8249;</button>
+    <button class="lightbox__next" aria-label="Next painting">&#8250;</button>
+    <div class="lightbox__content">
+      <picture class="lightbox__picture">
+        <source id="lightbox-source" type="image/webp" />
+        <img id="lightbox-img" src="" alt="" class="lightbox__image" />
+      </picture>
+      <div class="lightbox__caption">
+        <span id="lightbox-title"></span>
+        <span id="lightbox-year"></span>
+      </div>
+      <div class="lightbox__comments" id="lightbox-comments"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Created with love in memory of Rafael Gonzaga.</p>
+    <p class="footer__small">All paintings &copy; the Gonzaga family. Gallery built by his grandchild, 2025.</p>
+    <div class="auth-bar" id="auth-bar"></div>
+  </footer>
+
+  <div id="profile-modal-root"></div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

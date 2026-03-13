@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: {{ container_name }}
+    image: {{ docker_image }}
+    ports:
+      - "{{ deployment_port }}:3000"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - SESSION_SECRET={{ rafael_session_secret }}
+      - DB_PATH=/data/rafael.db
+      - AUTHENTIK_ISSUER=https://auth.gnzaga.com/application/o/rafael-exhibit/
+      - AUTHENTIK_CLIENT_ID=rafael-exhibit
+      - AUTHENTIK_CLIENT_SECRET={{ rafael_authentik_client_secret }}
+      - AUTHENTIK_REDIRECT_URI=https://rafael.gnzaga.com/api/auth/callback
+      - ADMIN_EMAILS={{ rafael_admin_emails }}
+    volumes:
+      - rafael-data:/data
+
+volumes:
+  rafael-data:

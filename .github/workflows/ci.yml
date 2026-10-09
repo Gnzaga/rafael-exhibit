@@ -1,0 +1,53 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # PR check. Required status check: `ci / ci`.
+  # Pinned to @main until ci-workflows is tagged; switch to @v1 once tagged.
+  ci:
+    if: github.event_name == 'pull_request'
+    uses: Gnzaga/ci-workflows/.github/workflows/pr-ci.yml@main
+    with:
+      runtime: node
+      runtime-version: "20"
+      install-command: npm ci
+      test-command: npm run build
+      images: |
+        [
+          {
+            "name": "rafael-exhibit",
+            "context": ".",
+            "dockerfile": "deployment/docker/Dockerfile"
+          }
+        ]
+
+  # Merged-code deploy to the fredo Komodo stack. Pinned to @main until ci-workflows is tagged.
+  deploy:
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
+    uses: Gnzaga/ci-workflows/.github/workflows/build-deploy.yml@main
+    with:
+      app: rafael-exhibit
+      deploy-target: komodo
+      komodo-stack: rafael-exhibit
+      compose-file: stacks/fredo/rafael-exhibit/compose.yml
+      images: |
+        [
+          {
+            "name": "rafael-exhibit",
+            "context": ".",
+            "dockerfile": "deployment/docker/Dockerfile",
+            "manifest-image": "harbor.gnzaga.com/apps/rafael-exhibit"
+          }
+        ]
+    secrets: inherit
